@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hafiz CNC | Precision Engineering Portfolio</title>
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent-color: #00f2fe;
+            --accent-glow: rgba(0, 242, 254, 0.4);
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 8%;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* Mobile Menu Toggle Button */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background-color: var(--text-main);
+            transition: 0.3s ease;
+        }
+
+        /* Animated Menu Toggle State */
+        .menu-toggle.active .bar1 {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        .menu-toggle.active .bar2 {
+            opacity: 0;
+        }
+        .menu-toggle.active .bar3 {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 35px;
+            transition: 0.3s;
+            font-size: 16px;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-color);
+            text-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* Navigation dynamic bottom border slider */
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        /* --- HERO / HOME SECTION --- */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05) 0%, transparent 70%);
+            position: relative;
+        }
+
+        .hero-content {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            overflow: hidden;
+            position: relative;
+            transition: 0.4s;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .cta-btn:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 30px var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        /* --- ABOUT SECTION --- */
+        section {
+            padding: 100px 8% 80px 8%;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 15px auto 0 auto;
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.1);
+        }
+
+        .feature-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+            border-left: 4px solid var(--accent-color);
+            transition: 0.3s;
+        }
+
+        .info-item:hover {
+            background: rgba(0, 242, 254, 0.04);
+            transform: scale(1.02);
+        }
+
+        .info-item h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .info-item p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .info-item a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 50px;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- MOBILE RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 5%;
+            }
+
+            .menu-toggle {
+                display: flex; /* Show menu toggle button on mobile */
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%; /* Hide navigation sidebar offscreen */
+                width: 70%;
+                height: 100vh;
+                background: rgba(13, 17, 23, 0.98);
+                backdrop-filter: blur(20px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transition: 0.4s ease;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            nav.active {
+                right: 0; /* Slide navigation menu inside screen */
+            }
+
+            nav a {
+                margin-left: 0;
+                font-size: 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.3rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 80px 5% 60px 5%;
+            }
+            
+            .contact-wrapper {
+                padding: 25px;
+            }
+            
+            .info-item p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Hafiz <span>CNC</span></div>
+        
+        <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle navigation">
+            <span class="bar1"></span>
+            <span class="bar2"></span>
+            <span class="bar3"></span>
+        </button>
+
+        <nav id="nav-menu">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+    </header>
+
+    <main id="home">
+        <div class="hero-content">
+            <h1>Precision Engineering<br>By <span>Hafiz CNC</span></h1>
+            <p>Bringing your custom designs to life with advanced computer-controlled cutting, milling, and high-accuracy metalwork manufacturing.</p>
+            <a href="#contact" class="cta-btn">Get A Quote</a>
+        </div>
+    </main>
+
+    <section id="about">
+        <h2 class="section-title">About Our Shop</h2>
+        <div class="about-container">
+            <div class="about-text">
+                <p>Welcome to Hafiz CNC. We specialize in top-tier CNC machining and custom engraving fabrication. Utilizing modern computer programming, we craft components with micro-level exactness.</p>
+                <p>Wire cut and CNc milling ,All Kinds of work is done satisfactorily in addition we provide the company service my cutting pices and also we sell CNC milling Drawing . We Don't work to earn money it is my job.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>CNC milling Accuracy</h3>
+                    <p>Flawless designs cut precisely to match your software blueprints down to the exact millimeter.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Heavy Materials</h3>
+                    <p>Expert processing across brass, aluminum, steel, wood, and advanced plastics.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Fast Turnaround</h3>
+                    <p>High-efficiency operations ensuring your production schedule stays perfectly on track.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Custom Shapes</h3>
+                    <p>If you can draw or model it in CAD, we can craft it on our heavy machinery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                
+                <div class="info-item">
+                    <h4>Phone Number</h4>
+                    <p><a href="tel:+923244565377">+923244565377</a></p>
+                </div>
+
+                <div class="info-item">
+                    <h4>Email Address</h4>
+                    <p><a href="mailto:info@hafizcnc.com">info@hafizcnc.com</a></p>
+                </div>
+
+                <div class="info-item">
+                    <h4>Our Shop Address</h4>
+                    <p>Shop #74 ,Railway road ,Lahore,Pakistan</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Hafiz CNC. All rights reserved. Designed by B.programmers.</p>
+    </footer>
+
+    <script>
+        /* --- 1. MOBILE HAMBURGER MENU LOGIC --- */
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // Toggle menu when clicking the button
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close the menu automatically when any menu link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+
+        /* --- 2. ACTIVE NAVIGATION HIGHLIGHT LOGIC ON SCROLL --- */
+        const htmlSections = document.querySelectorAll('main, section');
+        
+        window.addEventListener('scroll', () => {
+            let currentSectionId = '';
+            
+            htmlSections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // Detects if the section occupies the majority of the view panel
+                if (window.scrollY >= (sectionTop - sectionHeight / 3)) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(currentSectionId)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+
+        /* --- 3. SCROLL REVEAL ANIMATION LOGIC --- */
+        const dynamicElements = document.querySelectorAll('.feature-card, .info-item, .section-title');
+        
+        const observerOptions = {
+            root: null,
+            threshold: 0.1
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.style.transition = 'all 0.6s ease-out';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        dynamicElements.forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(25px)';
+            revealObserver.observe(element);
+        });
+    </script>
+</body>
+</html>
